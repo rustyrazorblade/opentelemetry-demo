@@ -4,15 +4,22 @@
 # extra settings to be merged into OpenTelemetry Collector configuration
 # do not delete this file
 
-## Example configuration for sending data to your own OTLP HTTP backend
-## Note: the spanmetrics exporter must be included in the exporters array
-## if overriding the traces pipeline.
-##
-#  exporters:
-#    otlphttp/example:
-#      endpoint: <your-endpoint-url>
-#
-#  service:
-#    pipelines:
-#      traces:
-#        exporters: [spanmetrics, otlphttp/example]
+## Kafka exporter configuration for traces
+exporters:
+  kafka:
+    brokers:
+      - kafka:9092  # Uses the existing Kafka service in docker-compose
+    protocol_version: 2.1.0
+    client_id: "otel-collector-traces"
+    traces:
+      topic: "otlp-traces"
+      encoding: otlp_proto  # Preserves all OpenTelemetry trace data
+    partition_traces_by_id: true  # Distributes traces by trace ID
+    timeout: 10s
+    metadata:
+      full: true
+      
+service:
+  pipelines:
+    traces:
+      exporters: [otlp, debug, spanmetrics, kafka]  # MUST include spanmetrics!
