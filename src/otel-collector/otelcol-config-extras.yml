@@ -13,7 +13,7 @@ exporters:
     client_id: "otel-collector-traces"
     traces:
       topic: "otlp-traces"
-      encoding: otlp_proto  # Preserves all OpenTelemetry trace data
+      encoding: otlp_json  # Preserves all OpenTelemetry trace data
     partition_traces_by_id: true  # Distributes traces by trace ID
     timeout: 10s
     metadata:
