@@ -811,8 +811,9 @@ services:
           memory: 20M
     restart: unless-stopped
     ports:
-      - "${VALKEY_PORT}"
+      - "${VALKEY_PORT}:${VALKEY_PORT}"
     logging: *logging
+
 
 
   # ********************
